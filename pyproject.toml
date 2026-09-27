@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strkit"
+version = "0.1.0"
+description = "Small, dependency-free string utilities for Python, with a CLI."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Corey Kelly" }]
+keywords = ["strings", "slug", "case-conversion", "text", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Text Processing",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+strkit = "strkit.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/sheepdogs/strkit"
+Issues = "https://github.com/sheepdogs/strkit/issues"
+
+[tool.setuptools.package-data]
+strkit = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src"]
+addopts = "--doctest-modules -q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]

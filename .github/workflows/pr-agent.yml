@@ -1,0 +1,54 @@
+name: PR-Agent
+
+# Automated review, description and code suggestions on every pull request
+# (https://github.com/qodo-ai/pr-agent), configured in .pr_agent.toml.
+#
+# pull_request_target runs in the base repository's context so fork PRs can
+# use the ANTHROPIC_KEY secret. That is safe here only because this workflow
+# NEVER checks out or executes the pull request's code: PR-Agent reads the
+# diff through the GitHub API. Do not add an actions/checkout step.
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  pr_agent:
+    # Automatic runs on new PRs from anyone; slash commands (/review,
+    # /describe, /improve, /ask) only from the owner and collaborators, so
+    # strangers can't spend the API budget.
+    if: >-
+      github.event.sender.type != 'Bot' &&
+      (github.event_name == 'pull_request_target' ||
+       (github.event.issue.pull_request &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check for the API key
+        id: key
+        env:
+          ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_KEY" ]; then
+            echo "::warning::ANTHROPIC_KEY secret is not set; skipping PR-Agent."
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: PR-Agent
+        if: steps.key.outputs.present == 'true'
+        # v0.46.0, pinned by commit because this job holds a write token.
+        uses: qodo-ai/pr-agent@1d01f24f455bb879c1d9c557ad7de3d72dcc7975
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC.KEY: ${{ secrets.ANTHROPIC_KEY }}
+          github_action_config.auto_review: "true"
+          github_action_config.auto_describe: "true"
+          github_action_config.auto_improve: "true"

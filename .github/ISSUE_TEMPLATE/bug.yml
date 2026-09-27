@@ -1,0 +1,26 @@
+name: Bug report
+description: Something returns the wrong result
+labels: ["bug"]
+body:
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: The smallest call that shows the problem.
+      render: python
+      placeholder: |
+        >>> from strkit import slugify
+        >>> slugify("...")
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: strkit version
+      placeholder: "0.1.0"

@@ -1,0 +1,29 @@
+# PR-Agent settings (https://qodo-merge-docs.qodo.ai/usage-guide/configuration_options/)
+
+[config]
+model = "anthropic/claude-opus-5"
+fallback_models = ["anthropic/claude-sonnet-5"]
+repo_context_files = ["AGENTS.md", "CONTRIBUTING.md"]
+
+[pr_reviewer]
+require_tests_review = true
+require_security_review = true
+require_estimate_effort_to_review = true
+num_max_findings = 5
+extra_instructions = """\
+strkit is a tiny, dependency-free Python string library. Each pull request should
+close exactly one issue. Check the linked issue's acceptance criteria first and say
+explicitly which are met and which are not. Then check correctness on edge cases
+(empty string, whitespace-only, unicode) and that new public functions have type
+hints, a doctest, an export in __init__.py / __all__, and a README table row.
+Flag any new runtime dependency. Don't comment on formatting; ruff enforces it.
+"""
+
+[pr_description]
+generate_ai_title = false
+publish_labels = false
+extra_instructions = "Keep it short. Mention which issue the pull request closes."
+
+[pr_code_suggestions]
+num_code_suggestions_per_chunk = 3
+extra_instructions = "Prefer correctness and readability suggestions over stylistic ones."
