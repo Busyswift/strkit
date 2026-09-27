@@ -4,7 +4,7 @@ name: PR-Agent
 # (https://github.com/qodo-ai/pr-agent), configured in .pr_agent.toml.
 #
 # pull_request_target runs in the base repository's context so fork PRs can
-# use the ANTHROPIC_KEY secret. That is safe here only because this workflow
+# use the OLLAMA_API_KEY secret. That is safe here only because this workflow
 # NEVER checks out or executes the pull request's code: PR-Agent reads the
 # diff through the GitHub API. Do not add an actions/checkout step.
 on:
@@ -34,10 +34,10 @@ jobs:
       - name: Check for the API key
         id: key
         env:
-          ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
+          OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
         run: |
-          if [ -z "$ANTHROPIC_KEY" ]; then
-            echo "::warning::ANTHROPIC_KEY secret is not set; skipping PR-Agent."
+          if [ -z "$OLLAMA_API_KEY" ]; then
+            echo "::warning::OLLAMA_API_KEY secret is not set; skipping PR-Agent."
             echo "present=false" >> "$GITHUB_OUTPUT"
           else
             echo "present=true" >> "$GITHUB_OUTPUT"
@@ -48,7 +48,7 @@ jobs:
         uses: qodo-ai/pr-agent@1d01f24f455bb879c1d9c557ad7de3d72dcc7975
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ANTHROPIC.KEY: ${{ secrets.ANTHROPIC_KEY }}
+          OLLAMA.API_KEY: ${{ secrets.OLLAMA_API_KEY }}
           github_action_config.auto_review: "true"
           github_action_config.auto_describe: "true"
           github_action_config.auto_improve: "true"

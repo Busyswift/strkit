@@ -1,9 +1,15 @@
 # PR-Agent settings (https://qodo-merge-docs.qodo.ai/usage-guide/configuration_options/)
 
 [config]
-model = "anthropic/claude-opus-5"
-fallback_models = ["anthropic/claude-sonnet-5"]
+# Ollama Cloud models (https://ollama.com/search?c=cloud). PR-Agent has no
+# built-in context sizes for them, so custom_model_max_tokens sets one.
+model = "ollama/kimi-k2.7-code"
+fallback_models = ["ollama/glm-5.3"]
+custom_model_max_tokens = 128000
 repo_context_files = ["AGENTS.md", "CONTRIBUTING.md"]
+
+[ollama]
+api_base = "https://ollama.com"
 
 [pr_reviewer]
 require_tests_review = true
