@@ -13,5 +13,5 @@ def slugify(text: str, separator: str = "-") -> str:
     'creme-brulee'
     """
     ascii_text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
-    slug = re.sub(r"[^a-zA-Z0-9]", separator, ascii_text.lower())
+    slug = re.sub(r"[^a-z0-9]+", separator, ascii_text.lower())
     return slug.strip(separator)
