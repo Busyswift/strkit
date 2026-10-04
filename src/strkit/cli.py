@@ -4,7 +4,7 @@ import argparse
 import sys
 from collections.abc import Callable, Sequence
 
-from strkit import case, slug, text
+from strkit import __version__, case, slug, text
 
 COMMANDS: dict[str, Callable[[str], str]] = {
     "slug": slug.slugify,
@@ -19,6 +19,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="strkit", description="Small, dependency-free string utilities."
     )
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
     for name, func in COMMANDS.items():
         summary = (func.__doc__ or "").strip().splitlines()[0]

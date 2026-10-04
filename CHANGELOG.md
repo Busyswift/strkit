@@ -5,6 +5,9 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+- `strkit --version` prints the installed version and exits 0.
+
 ## [0.1.0] - 2026-09-27
 
 ### Added
