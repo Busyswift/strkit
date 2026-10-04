@@ -27,6 +27,17 @@ def test_version_prints_package_version_and_exits_zero(capsys):
     assert capsys.readouterr().out == f"strkit {__version__}\n"
 
 
+@pytest.mark.parametrize(
+    "argv",
+    [["slug", "x", "--version"], ["truncate", "x", "--version"], ["snake", "--version"]],
+)
+def test_version_after_subcommand(capsys, argv):
+    with pytest.raises(SystemExit) as exit_info:
+        main(argv)
+    assert exit_info.value.code == 0
+    assert capsys.readouterr().out == f"strkit {__version__}\n"
+
+
 def test_unknown_command_exits_with_usage(capsys):
     with pytest.raises(SystemExit) as exit_info:
         main(["shout", "hi"])

@@ -1,4 +1,4 @@
-# Changelog
+﻿# Changelog
 
 All notable changes are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
@@ -6,7 +6,7 @@ All notable changes are recorded here. The format follows
 ## [Unreleased]
 
 ### Added
-- `strkit --version` prints the installed version and exits 0.
+- `strkit --version` (also accepted after any subcommand) prints the installed version and exits 0.
 
 ## [0.1.0] - 2026-09-27
 
